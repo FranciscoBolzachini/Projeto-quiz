@@ -1,11 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Interativo - HTML, CSS e JavaScript</title>
+    <meta
+      name="description"
+      content="Escolha um tema, responda as questões e mostre que você é um(a) fera no assunto!"
+    />
+    <meta
+      property="og:title"
+      content="Quiz Interativo - HTML, CSS e JavaScript"
+    />
+    <meta property="og:image" content="./icons/icon.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style/styles.css" />
+  </head>
+  <body>
+    <main class="main">
+      <header class="header">
+        <a href="#" class="logo">Quiz.</a>
+      </header>
+
+      <div class="container">
+        <section class="quiz-section">
+          <div class="quiz-box">
+            <h1>Quiz Interativo</h1>
+            <div class="quiz-header">
+              <span>Quiz Squad6</span>
+              <span class="header-score">Pontuação: 0 / 10</span>
+            </div>
+            <h2 class="question-text">klksllloosddsa?</h2>
+            <div class="option-list">
+              <div class="option">
+                <span>A. blablablabla</span>
+              </div>
+              <div class="option">
+                <span>B. blablablabla</span>
+              </div>
+              <div class="option">
+                <span>C. blablablabla</span>
+              </div>
+              <div class="option">
+                <span>D. blablablabla</span>
+              </div>
+            </div>
+
+            <div class="quiz-footer">
+              <span class="question-total">1 de 10 Questões</span>
+              <button class="next-btn">Próxima</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="home">
+          <div class="home_content">
+            <h1>Quiz Interativo</h1>
+
+            <p>Insira seu nome e escolha um tema:</p>
+            <div class="participant-input">
+              <label for="participantName">Seu nome:</label>
+              <input
+                type="text"
+                id="participantName"
+                placeholder="Digite seu nome"
+              />
+            </div>
+            <div class="theme-buttons">
+              <button class="html-theme">HTML</button>
+              <button class="css-theme">CSS</button>
+              <button class="js-theme">JavaScript</button>
+            </div>
+            <button class="start-btn">Iniciar</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="popup-info">
+      <h2>Vamos testar seus conhecimentos?</h2>
+      <span class="info"
+        >1. Somente uma das opções é a resposta correta para cada
+        pergunta.</span
+      >
+      <span class="info"
+        >2. Responda corretamente às perguntas selecionando a letra
+        correspondente à resposta correta.</span
+      >
+      <span class="info"
+        >3. Ao finalizar o quiz, verifique suas respostas, quantas questões
+        acertou e errou, e o tempo decorrido.</span
+      >
+      <span class="info"
+        >4.Além disso, ofereceremos alguns insights interessantes, como a média
+        de acertos por tema e o ranking de pontuação por tema</span
+      >
+      <span class="info"
+        >5. Se desejar, reinicie o quiz e escolha outro tema para desafiar seus
+        conhecimentos novamente.</span
+      >
+      <span class="info"
+        >Aproveite o Quiz Interativo e divirta-se testando seus conhecimentos em
+        HTML, CSS e JavaScript! Boa sorte e bons estudos!</span
+      >
+
+      <div class="btn-group">
+        <button class="info-btn exit-btn">Sair do Quiz</button>
+        <a href="#" class="info-btn continue-btn">Continue</a>
+      </div>
+    </div>
+
+    <script>
+      const startBtn = document.querySelector(".start-btn");
+      const popupInfo = document.querySelector(".popup-info");
+      const exitBtn = document.querySelector(".exit-btn");
+      const main = document.querySelector(".main");
+      const continueBtn = document.querySelector(".continue-btn");
+      const quizSection = document.querySelector(".quiz-section");
+      const quizBox = document.querySelector(".quiz-box");
+
+      startBtn.onclick = () => {
+        popupInfo.classList.add("active");
+        main.classList.add("active");
+      };
+
+      exitBtn.onclick = () => {
+        popupInfo.classList.remove("active");
+        main.classList.remove("active");
+      };
+
+      continueBtn.onclick = () => {
+        quizSection.classList.add("active");
+        popupInfo.classList.remove("active");
+        main.classList.remove("active");
+        quizBox.classList.add("active");
+
+        showQuestions(0);
+        questionCounter(1);
+      };
+
+      let questionCount = 0;
+      let questionNum = 1;
+
+      const nextBtn = document.querySelector(".next-btn");
+
+      nextBtn.onclick = () => {
+        if (questionCount < questions.length - 1) {
+          questionCount++;
+          showQuestions(questionCount);
+
+          questionNum++;
+          questionCounter(questionNum);
+        } else {
+          console.log("Questão concluída");
+        }
+      };
+
+      function showQuestions(index) {
+        const questionText = document.querySelector(".question-text");
+        questionText.textContent = `${questions[index].num}. ${questions[index].question}`;
+
+        const optionList = document.querySelector(".option-list");
+        optionList.innerHTML = "";
+
+        for (let i = 0; i < questions[index].options.length; i++) {
+          const option = document.createElement("div");
+          option.classList.add("option");
+
+          const span = document.createElement("span");
+          span.textContent = questions[index].options[i];
+
+          option.appendChild(span);
+          optionList.appendChild(option);
+        }
+
+        const options = document.querySelectorAll(".option");
+        options.forEach((option) => {
+          option.addEventListener("click", () => optionSelected(option));
+        });
+      }
+
+      function optionSelected(answer) {
+        let userAnswer = answer.textContent;
+        let correctAnswer = questions[questionCount].answer;
+        let allOptions = optionList.children.length;
+        if (userAnswer == correctAnswer) {
+          answer.classList.add("correct");
+        } else {
+          answer.classList.add("incorrect");
+
+          for (let i = 0; i < allOptions; i++) {
+            if (optionList.children[i].textContent == correctAnswer) {
+              optionList.children[i].setAttribute("class", "option correct");
+            }
+          }
+        }
+        for (let i = 0; i < allOptions; i++) {
+          optionList.children[i].classList.add("disabled");
+        }
+      }
+
+      function questionCounter(index) {
+        const questionTotal = document.querySelector(".question-total");
+        questionTotal.textContent = `${index} of ${questions.length} Questions`;
+      }
+
+      let questions = [
+        {
+          num: 1,
+          question:
+            "Qual é a sigla para a linguagem de marcação utilizada para criar páginas web?",
+          answer: "A. HTML",
+          options: ["A. HTML", "B. XHTML", "C. XML", "D. HTTP"],
+        },
+        {
+          num: 2,
+          question: "Qual é a tag utilizada para criar um link em HTML?",
+          answer: "A. <a>",
+          options: ["A. <a>", "B. <link>", "C. <href>", "D. <url>"],
+        },
+        {
+          num: 3,
+          question:
+            "Qual é a tag correta para criar uma lista não ordenada em HTML?",
+          answer: "B. <ul>",
+          options: ["A. <ol>", "B. <ul>", "C. <list>", "D. <li>"],
+        },
+        {
+          num: 4,
+          question: "Qual é a versão mais recente do HTML?",
+          answer: "D. HTML5",
+          options: ["A. XML3", "B. HTML4", "C. HTML8", "D. HTML5"],
+        },
+        {
+          num: 5,
+          question: " Qual é a tag para criar um parágrafo em HTML?",
+          answer: "C. <p>",
+          options: ["A. <para>", "B.<paragraph> ", "C.<p> ", "D.<text> "],
+        },
+        {
+          num: 6,
+          question: "Qual é a tag para inserir uma imagem em HTML?",
+          answer: "D. <img>",
+          options: ["A. <image>", "B. <src>", "C. <picture>", "D. <img>"],
+        },
+        {
+          num: 7,
+          question: "Qual é a tag para criar um título de nível 1 em HTML?",
+          answer: "B. <h1>",
+          options: ["A. <title>", "B. <h1>", "C.<heading>", "D. <header>"],
+        },
+        {
+          num: 8,
+          question: "Qual é a tag para criar uma quebra de linha em HTML?",
+          answer: "C. <br>",
+          options: ["A. <break>", "B. <lb>", "C. <br>", "D. <newline>"],
+        },
+        {
+          num: 9,
+          question: "Qual é a tag para criar um formulário em HTML?",
+          answer: "A. <form>",
+          options: ["A. <form>", "B. <input>", "C. <fieldset>", "D. <submit>"],
+        },
+        {
+          num: 10,
+          question: "Qual é a tag para criar uma tabela em HTML?",
+          answer: "D. <table>",
+          options: ["A. <tab>", "B. <tr>", "C. <tabela>", "D. <table>"],
+        },
+      ];
+    </script>
+  </body>
 </html>
