@@ -1,3 +1,7 @@
+// para colocar no HTML 
+// <button class="pausePlay">pause</button>
+// <audio class="meuAudio" src="./audio-fundo/WhatsApp Audio 2023-07-26 at 22.23.34.mpeg"></audio>
+
 // constantes que eu adicionei que são para adicionar no js raiz
 
 const pausebtn = document.querySelector(".pausePlay");
