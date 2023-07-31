@@ -6,7 +6,7 @@
     <title>Quiz Interativo - HTML, CSS e JavaScript</title>
     <meta
       name="description"
-      content="Escolha um tema, responda as questões e mostre que você é um(a) fera no assunto!"
+      content="Escolha um tema, responda as questões e mostre que você é fera no assunto!"
     />
     <meta
       property="og:title"
@@ -14,7 +14,6 @@
     />
     <meta property="og:image" content="./icons/icon.png" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="style/styles.css" />
   </head>
@@ -32,25 +31,30 @@
               <span>Quiz Squad6</span>
               <span class="header-score">Pontuação: 0 / 10</span>
             </div>
-            <h2 class="question-text">klksllloosddsa?</h2>
+            <h2 class="question-text"></h2>
             <div class="option-list">
               <div class="option">
-                <span>A. blablablabla</span>
-              </div>
-              <div class="option">
-                <span>B. blablablabla</span>
-              </div>
-              <div class="option">
-                <span>C. blablablabla</span>
-              </div>
-              <div class="option">
-                <span>D. blablablabla</span>
+                <span></span>
               </div>
             </div>
 
             <div class="quiz-footer">
               <span class="question-total">1 de 10 Questões</span>
               <button class="next-btn">Próxima</button>
+            </div>
+          </div>
+
+          <div class="result-box">
+            <h2>Resultado</h2>
+            <div class="percentage-container">
+              <div class="circular-progress">
+                <span class="progress-value"> 0% </span>
+              </div>
+              <span class="score-text">Sua pontuação 0 de 10</span>
+            </div>
+            <div class="buttons">
+              <button class="tryAgain-btn">Refazer</button>
+              <button class="goHome-btn">Home</button>
             </div>
           </div>
         </section>
@@ -86,8 +90,7 @@
         pergunta.</span
       >
       <span class="info"
-        >2. Responda corretamente às perguntas selecionando a letra
-        correspondente à resposta correta.</span
+        >2.Analise bem as opções antes de escolher uma delas.</span
       >
       <span class="info"
         >3. Ao finalizar o quiz, verifique suas respostas, quantas questões
@@ -120,6 +123,10 @@
       const continueBtn = document.querySelector(".continue-btn");
       const quizSection = document.querySelector(".quiz-section");
       const quizBox = document.querySelector(".quiz-box");
+      const resultBox = document.querySelector(".result-box");
+      const nextBtn = document.querySelector(".next-btn");
+      const tryAgainBtn = document.querySelector(".tryAgain-btn");
+      const goHomeBtn = document.querySelector(".goHome-btn");
 
       startBtn.onclick = () => {
         popupInfo.classList.add("active");
@@ -139,12 +146,38 @@
 
         showQuestions(0);
         questionCounter(1);
+        headerScore();
+      };
+
+      tryAgainBtn.onclick = () => {
+        quizBox.classList.add("active");
+        nextBtn.classList.remove("active");
+        resultBox.classList.remove("active");
+
+        questionCount = 0;
+        questionNum = 1;
+        userScore = 0;
+        showQuestions(questionCount);
+        questionCounter(questionNum);
+
+        headerScore();
+      };
+
+      goHomeBtn.onclick = () => {
+        quizSection.classList.remove("active");
+        nextBtn.classList.remove("active");
+        resultBox.classList.remove("active");
+
+        questionCount = 0;
+        questionNum = 1;
+        userScore = 0;
+        showQuestions(questionCount);
+        questionCounter(questionNum);
       };
 
       let questionCount = 0;
       let questionNum = 1;
-
-      const nextBtn = document.querySelector(".next-btn");
+      let userScore = 0;
 
       nextBtn.onclick = () => {
         if (questionCount < questions.length - 1) {
@@ -153,8 +186,9 @@
 
           questionNum++;
           questionCounter(questionNum);
+          nextBtn.classList.remove("active");
         } else {
-          console.log("Questão concluída");
+          showResultBox();
         }
       };
 
@@ -183,28 +217,75 @@
       }
 
       function optionSelected(answer) {
-        let userAnswer = answer.textContent;
-        let correctAnswer = questions[questionCount].answer;
-        let allOptions = optionList.children.length;
-        if (userAnswer == correctAnswer) {
-          answer.classList.add("correct");
-        } else {
-          answer.classList.add("incorrect");
+        if (quizBox.classList.contains("active")) {
+          let userAnswer = answer.textContent.trim();
+          let correctAnswer = questions[questionCount].answer.trim();
+          let allOptions = document.querySelectorAll(".option");
 
-          for (let i = 0; i < allOptions; i++) {
-            if (optionList.children[i].textContent == correctAnswer) {
-              optionList.children[i].setAttribute("class", "option correct");
+          if (userAnswer === correctAnswer) {
+            answer.classList.add("correct");
+            userScore += 1;
+            headerScore();
+          } else {
+            answer.classList.add("incorrect");
+
+            for (let i = 0; i < allOptions.length; i++) {
+              if (allOptions[i].textContent.trim() === correctAnswer) {
+                allOptions[i].classList.add("correct");
+              }
             }
           }
-        }
-        for (let i = 0; i < allOptions; i++) {
-          optionList.children[i].classList.add("disabled");
+
+          for (let i = 0; i < allOptions.length; i++) {
+            allOptions[i].classList.add("disabled");
+          }
+          nextBtn.classList.add("active");
         }
       }
 
       function questionCounter(index) {
         const questionTotal = document.querySelector(".question-total");
         questionTotal.textContent = `${index} of ${questions.length} Questions`;
+      }
+
+      function headerScore() {
+        const headerScoreText = document.querySelector(".header-score");
+        headerScoreText.textContent = `Score: ${userScore} / ${questions.length}`;
+      }
+
+      function animateCircularProgress() {
+        const circularProgress = document.querySelector(
+          ".percentage-container .circular-progress"
+        );
+        const progressValue = document.querySelector(
+          ".percentage-container .progress-value"
+        );
+        let progressStartValue = 0;
+        let progressEndValue = (userScore / questions.length) * 100;
+        let speed = 20;
+
+        let progress = setInterval(() => {
+          progressStartValue++;
+
+          progressValue.textContent = `${progressStartValue}%`;
+          circularProgress.style.background = `conic-gradient(#ff0157 ${
+            progressStartValue * 3.6
+          }deg, rgba(255, 255, 255, 0.1) ${progressStartValue * 3.6}deg)`;
+
+          if (progressStartValue == progressEndValue) {
+            clearInterval(progress);
+          }
+        }, speed);
+      }
+
+      function showResultBox() {
+        quizBox.classList.remove("active");
+        resultBox.classList.add("active");
+
+        const scoreText = document.querySelector(".score-text");
+        scoreText.textContent = `Sua pontuação: ${userScore} de ${questions.length}`;
+
+        animateCircularProgress();
       }
 
       let questions = [
@@ -217,58 +298,112 @@
         },
         {
           num: 2,
-          question: "Qual é a tag utilizada para criar um link em HTML?",
-          answer: "A. <a>",
-          options: ["A. <a>", "B. <link>", "C. <href>", "D. <url>"],
+          question:
+            "Qual é a função da tag <meta> no elemento <head> de um documento HTML?",
+          answer: "A. Fornecer metadados sobre a página",
+          options: [
+            "A. Fornecer metadados sobre a página",
+            "B. Definir um estilo interno para a página",
+            "C.  Criar uma lista de links para outras páginas",
+            "D. Incluir um arquivo de script externo",
+          ],
         },
         {
           num: 3,
           question:
-            "Qual é a tag correta para criar uma lista não ordenada em HTML?",
-          answer: "B. <ul>",
-          options: ["A. <ol>", "B. <ul>", "C. <list>", "D. <li>"],
+            "O que é o atributo 'alt' em uma tag <img> e qual é a sua importância?",
+          answer:
+            "C. É um atributo usado para fornecer um texto alternativo para a imagem, que é exibido quando a imagem não pode ser carregada ou lida por leitores de tela",
+          options: [
+            "A. É um atributo usado para especificar o tamanho da imagem em pixels",
+            "B. É um atributo usado para definir o alinhamento da imagem na página",
+            "C. É um atributo usado para fornecer um texto alternativo para a imagem, que é exibido quando a imagem não pode ser carregada ou lida por leitores de tela",
+            "D. É um atributo usado para definir a posição da imagem em relação ao conteúdo circundante",
+          ],
         },
         {
           num: 4,
-          question: "Qual é a versão mais recente do HTML?",
-          answer: "D. HTML5",
-          options: ["A. XML3", "B. HTML4", "C. HTML8", "D. HTML5"],
+          question:
+            "Qual é a diferença entre os elementos HTML <span> e <div>?",
+          answer:
+            "A. <span> é um elemento de linha e é usado para estilizar um trecho de texto, enquanto <div> é um elemento de bloco e é usado para agrupar outros elementos e criar áreas distintas na página",
+          options: [
+            "A. <span> é um elemento de linha e é usado para estilizar um trecho de texto, enquanto <div> é um elemento de bloco e é usado para agrupar outros elementos e criar áreas distintas na página",
+            "B. <span> é usado para criar links clicáveis, enquanto <div> é usado para formatar o texto em negrito ou itálico",
+            "C. <span> é usado para criar listas ordenadas, enquanto <div> é usado para criar listas não ordenadas",
+            "D. <span> é usado para incorporar conteúdo externo, como vídeos e mapas, enquanto <div> é usado para definir o título de uma página",
+          ],
         },
         {
           num: 5,
-          question: " Qual é a tag para criar um parágrafo em HTML?",
-          answer: "C. <p>",
-          options: ["A. <para>", "B.<paragraph> ", "C.<p> ", "D.<text> "],
+          question:
+            "O que é o atributo 'role' em HTML e qual é a sua finalidade?",
+          answer:
+            "C. É um atributo usado para informar o navegador e leitores de tela sobre a função semântica de um elemento na página",
+          options: [
+            "A. É um atributo usado para especificar o tamanho de um elemento em relação à tela",
+            "B. É um atributo usado para estilizar elementos com bordas e sombras",
+            "C. É um atributo usado para informar o navegador e leitores de tela sobre a função semântica de um elemento na página",
+            "D. É um atributo usado para criar animações em elementos HTML",
+          ],
         },
         {
           num: 6,
-          question: "Qual é a tag para inserir uma imagem em HTML?",
-          answer: "D. <img>",
-          options: ["A. <image>", "B. <src>", "C. <picture>", "D. <img>"],
+          question:
+            "Qual é o elemento HTML usado para agrupar itens de menu, itens de navegação ou itens semelhantes?",
+          answer: "C. <nav>",
+          options: ["A. <menu>", "B. <list>", "C. <nav>", "D. <ul>"],
         },
         {
           num: 7,
-          question: "Qual é a tag para criar um título de nível 1 em HTML?",
-          answer: "B. <h1>",
-          options: ["A. <title>", "B. <h1>", "C.<heading>", "D. <header>"],
+          question:
+            "O que é um atributo 'data-' em um elemento HTML e qual é a sua finalidade?",
+          answer:
+            "B. É um atributo personalizado que permite aos desenvolvedores armazenar informações adicionais nos elementos, acessíveis através do JavaScript, CSS ou outras tecnologias",
+          options: [
+            "A. É um atributo usado para definir uma data específica para o elemento",
+            "B. É um atributo personalizado que permite aos desenvolvedores armazenar informações adicionais nos elementos, acessíveis através do JavaScript, CSS ou outras tecnologias",
+            "C. É um atributo usado para especificar a cor de fundo do elemento",
+            "D. É um atributo usado para definir o alinhamento do conteúdo do elemento",
+          ],
         },
         {
           num: 8,
-          question: "Qual é a tag para criar uma quebra de linha em HTML?",
-          answer: "C. <br>",
-          options: ["A. <break>", "B. <lb>", "C. <br>", "D. <newline>"],
+          question: "Qual é a função da tag <iframe> em HTML?",
+          answer:
+            "D. Incorporar conteúdo externo, como páginas de outros sites ou vídeos, dentro de uma página web",
+          options: [
+            "A. Criar uma área de texto multilinha para entrada do usuário",
+            "B. Exibir uma lista suspensa de opções para seleção do usuário",
+            "C. Mostrar uma imagem estática em uma página web",
+            "D. Incorporar conteúdo externo, como páginas de outros sites ou vídeos, dentro de uma página web",
+          ],
         },
         {
           num: 9,
-          question: "Qual é a tag para criar um formulário em HTML?",
-          answer: "A. <form>",
-          options: ["A. <form>", "B. <input>", "C. <fieldset>", "D. <submit>"],
+          question:
+            "Qual é a finalidade da tag <label> em relação a outros elementos HTML?",
+          answer:
+            "A. Associar um rótulo descritivo a um elemento de formulário, melhorando a usabilidade e acessibilidade",
+          options: [
+            "A. Associar um rótulo descritivo a um elemento de formulário, melhorando a usabilidade e acessibilidade",
+            "B. Definir um estilo personalizado para um texto na página",
+            "C. Incluir uma imagem na página",
+            "D. Criar um link interno para uma seção específica da página",
+          ],
         },
         {
           num: 10,
-          question: "Qual é a tag para criar uma tabela em HTML?",
-          answer: "D. <table>",
-          options: ["A. <tab>", "B. <tr>", "C. <tabela>", "D. <table>"],
+          question:
+            "O que é o atributo 'contenteditable' em HTML e qual é a sua função?",
+          answer:
+            "B. É um atributo usado para tornar um elemento editável pelo usuário, permitindo que o conteúdo seja modificado diretamente na página",
+          options: [
+            "A. É um atributo usado para especificar o tipo de codificação de caracteres usada na página",
+            "B. É um atributo usado para tornar um elemento editável pelo usuário, permitindo que o conteúdo seja modificado diretamente na página",
+            "C. É um atributo usado para adicionar um estilo em linha ao elemento",
+            "D. É um atributo usado para definir uma cor de texto para o elemento",
+          ],
         },
       ];
     </script>

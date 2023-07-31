@@ -9,8 +9,7 @@ padding c) border d) inner-margin Resposta correta: b) padding 5. Qual é a
 propriedade do CSS utilizada para definir a cor de fundo de um elemento? a)
 background-color b) color c) bg-color d) background Resposta correta: a)
 background-color 6. Qual é a propriedade do CSS utilizada para definir a largura
-de um elemento? a) width b) size c) length d) height Resposta correta: a) width
-7. Qual é a propriedade do CSS utilizada para definir a posição de um elemento?
+de um elemento? a) width b) size c) length d) height Resposta correta: a) width 7. Qual é a propriedade do CSS utilizada para definir a posição de um elemento?
 a) position b) place c) top d) move Resposta correta: a) position 8. Qual é a
 propriedade do CSS utilizada para definir a cor da borda de um elemento? a)
 border-color b) color c) border d) border-style Resposta correta: a)
@@ -18,7 +17,9 @@ border-color 9. Qual é a propriedade do CSS utilizada para definir a fonte de u
 texto? a) font-family b) font-style c) font d) text-family Resposta correta: a)
 font-family 10. Qual é a propriedade do CSS utilizada para definir o alinhamento
 de texto? a) text-align b) align c) text-position d) alignment Resposta correta:
-a) text-align Perguntas sobre JavaScript: Qual é a linguagem de programação
+a) text-align
+
+Perguntas sobre JavaScript: Qual é a linguagem de programação
 utilizada para criar interações em páginas web? a) HTML b) CSS c) JavaScript d)
 Java Resposta correta: c) JavaScript Qual é a função do operador "+" no
 JavaScript? a) Adição b) Concatenação c) Subtração d) Multiplicação Resposta
