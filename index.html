@@ -25,6 +25,9 @@
 
       <div class="container">
         <section class="quiz-section">
+          <div class="cronometro-container">
+            <div id="cronometro" class="cronometro">00:00:00</div>
+          </div>
           <div class="quiz-box">
             <h1>Quiz Interativo</h1>
             <div class="quiz-header">
@@ -43,7 +46,6 @@
               <button class="next-btn">Próxima</button>
             </div>
           </div>
-
           <div class="result-box">
             <h2>Resultado</h2>
             <div class="percentage-container">
@@ -128,6 +130,9 @@
       const tryAgainBtn = document.querySelector(".tryAgain-btn");
       const goHomeBtn = document.querySelector(".goHome-btn");
 
+      const participantNameInput = document.getElementById("participantName");
+      const themeSelect = document.getElementById("themeSelect");
+
       startBtn.onclick = () => {
         popupInfo.classList.add("active");
         main.classList.add("active");
@@ -191,6 +196,19 @@
           showResultBox();
         }
       };
+
+      function loadQuestionsByTheme(theme) {
+        switch (theme) {
+          case "HTML":
+            return htmlQuestions;
+          case "CSS":
+            return cssQuestions;
+          case "JavaScript":
+            return jsQuestions;
+          default:
+            return [];
+        }
+      }
 
       function showQuestions(index) {
         const questionText = document.querySelector(".question-text");

@@ -7,6 +7,12 @@
   --font-family: "Nunito Sans", sans-serif;
 }
 
+.light-theme {
+  --primary-color: #cc5b05;
+  --secondary-color: url(../img/fundo-branco-de-hexagonos.avif);
+  --background-image: url(../img/fundo-branco-de-hexagonos.avif);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +27,10 @@ body {
   overflow: hidden;
 }
 
+body.light-theme {
+  color: var(--light-font-color);
+  background: var(--light-secondary-color);
+}
 .header {
   position: fixed;
   top: 0;
@@ -494,6 +504,20 @@ body {
 .buttons button:nth-child(2):hover {
   background: var(--primary-color);
   color: #fff;
+}
+
+.cronometro-container {
+  position: absolute;
+  top: 60px;
+  right: 80px;
+  background-color: var(--primary-color);
+  padding: 20px 30px;
+  border-radius: 10%;
+  box-shadow: 0 2px 5px var(--primary-color);
+}
+.cronometro {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 476px) {
