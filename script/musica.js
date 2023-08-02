@@ -4,11 +4,11 @@
 
 // constantes que eu adicionei que são para adicionar no js raiz
 
-const pausebtn = document.querySelector(".pausePlay");
-const audio = document.querySelector(".meuAudio");
-const quizhtml = document.querySelector(".html-theme");
-const quizcss = document.querySelector(".css-theme");
-const quizjs = document.querySelector(".js-theme");
+export const pausebtn = document.querySelector(".pausePlay");
+export const audio = document.querySelector(".meuAudio");
+export const quizhtml = document.querySelector(".html-theme");
+export const quizcss = document.querySelector(".css-theme");
+export const quizjs = document.querySelector(".js-theme");
 
 export const audios = [
     "../audio-fundo/WhatsApp Audio 2023-07-26 at 22.23.34.mpeg",
