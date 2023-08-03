@@ -14,8 +14,13 @@
     />
     <meta property="og:image" content="./icons/icon.png" />
     <meta property="og:image:width" content="1200" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="style/styles.css" />
+    <link rel="stylesheet" href="./style/dark-theme.css" />
   </head>
   <body>
     <main class="main">
@@ -29,7 +34,7 @@
             <div id="cronometro" class="cronometro">00:00:00</div>
           </div>
           <div class="quiz-box">
-            <h1>Quiz Interativo</h1>
+            <h1 class="quiz-title">Quiz Interativo</h1>
             <div class="quiz-header">
               <span>Quiz Squad6</span>
               <span class="header-score">Pontuação: 0 / 10</span>
@@ -46,6 +51,7 @@
               <button class="next-btn">Próxima</button>
             </div>
           </div>
+
           <div class="result-box">
             <h2>Resultado</h2>
             <div class="percentage-container">
@@ -57,6 +63,25 @@
             <div class="buttons">
               <button class="tryAgain-btn">Refazer</button>
               <button class="goHome-btn">Home</button>
+            </div>
+          </div>
+
+          <div class="ranking-box">
+            <div class="ranking-container">
+              <h2>Ranking</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nome do Participante</th>
+                    <th>Pontuação HTML</th>
+                    <th>Pontuação CSS</th>
+                    <th>Pontuação JavaScript</th>
+                    <th>Tempo de Resposta</th>
+                    <th>Data do Quiz</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
             </div>
           </div>
         </section>
@@ -91,9 +116,7 @@
         >1. Somente uma das opções é a resposta correta para cada
         pergunta.</span
       >
-      <span class="info"
-        >2.Analise bem as opções antes de escolher uma delas.</span
-      >
+      <span class="info">2.Analise bem as opções antes de escolher uma.</span>
       <span class="info"
         >3. Ao finalizar o quiz, verifique suas respostas, quantas questões
         acertou e errou, e o tempo decorrido.</span
@@ -116,6 +139,14 @@
         <a href="#" class="info-btn continue-btn">Continue</a>
       </div>
     </div>
+    <audio controls id="audioPlayer">
+      <source src="#" type="audio/mpeg" />
+      Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <span id="iconToggle"><i class="fa">&#xf185;</i></span>
+    </button>
 
     <script>
       const startBtn = document.querySelector(".start-btn");
@@ -126,12 +157,15 @@
       const quizSection = document.querySelector(".quiz-section");
       const quizBox = document.querySelector(".quiz-box");
       const resultBox = document.querySelector(".result-box");
+      const resultBoxContainer = document.querySelector(
+        ".result-box-container"
+      );
       const nextBtn = document.querySelector(".next-btn");
       const tryAgainBtn = document.querySelector(".tryAgain-btn");
       const goHomeBtn = document.querySelector(".goHome-btn");
-
       const participantNameInput = document.getElementById("participantName");
       const themeSelect = document.getElementById("themeSelect");
+      const showResultsBtn = document.querySelector(".show-results-btn");
 
       startBtn.onclick = () => {
         popupInfo.classList.add("active");
@@ -196,6 +230,77 @@
           showResultBox();
         }
       };
+
+      let isResultsVisible = false;
+
+      function fillResultsTable() {
+        const resultTable = document.getElementById("result-table");
+        const resultTableBody = resultTable.querySelector("tbody");
+
+        resultTableBody.innerHTML = "";
+
+        participantsData.forEach((participant) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+        <td>${participant.name}</td>
+        <td>${participant.scores.HTML}</td>
+        <td>${participant.scores.CSS}</td>
+        <td>${participant.scores.JavaScript}</td>
+        <td>${participant.timeTaken}</td>
+        <td>${participant.date}</td>
+      `;
+          resultTableBody.appendChild(row);
+        });
+
+        const htmlAverage = document.getElementById("html-average");
+        const cssAverage = document.getElementById("css-average");
+        const javascriptAverage = document.getElementById("javascript-average");
+
+        const totalParticipants = participantsData.length;
+        const htmlTotalScore = participantsData.reduce(
+          (acc, participant) => acc + participant.scores.HTML,
+          0
+        );
+        const cssTotalScore = participantsData.reduce(
+          (acc, participant) => acc + participant.scores.CSS,
+          0
+        );
+        const javascriptTotalScore = participantsData.reduce(
+          (acc, participant) => acc + participant.scores.JavaScript,
+          0
+        );
+
+        const htmlAverageScore = htmlTotalScore / totalParticipants;
+        const cssAverageScore = cssTotalScore / totalParticipants;
+        const javascriptAverageScore = javascriptTotalScore / totalParticipants;
+
+        htmlAverage.textContent = htmlAverageScore.toFixed(2);
+        cssAverage.textContent = cssAverageScore.toFixed(2);
+        javascriptAverage.textContent = javascriptAverageScore.toFixed(2);
+      }
+
+      function toggleTheme() {
+        const body = document.body;
+        const iconToggle = document.getElementById("iconToggle");
+
+        if (body.classList.contains("dark-theme")) {
+          body.classList.remove("dark-theme");
+          body.classList.add("light-theme");
+          iconToggle.innerHTML = '<i class="fa">&#xf186;</i>';
+        } else {
+          body.classList.remove("light-theme");
+          body.classList.add("dark-theme");
+          iconToggle.innerHTML = '<i class="fa">&#xf185;</i>';
+        }
+      }
+      function togglePlayPause() {
+        const audio = document.getElementById("audioPlayer");
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
 
       function loadQuestionsByTheme(theme) {
         switch (theme) {
@@ -423,6 +528,40 @@
             "D. É um atributo usado para definir uma cor de texto para o elemento",
           ],
         },
+      ];
+
+      const participantsData = [
+        {
+          name: "João",
+          scores: {
+            HTML: 8,
+            CSS: 7,
+            JavaScript: 9,
+          },
+          timeTaken: "10 minutos",
+          date: "2023-08-01",
+        },
+        {
+          name: "Maria",
+          scores: {
+            HTML: 7,
+            CSS: 6,
+            JavaScript: 8,
+          },
+          timeTaken: "12 minutos",
+          date: "2023-08-02",
+        },
+        {
+          name: "Pedro",
+          scores: {
+            HTML: 6,
+            CSS: 8,
+            JavaScript: 7,
+          },
+          timeTaken: "8 minutos",
+          date: "2023-08-03",
+        },
+        // Adicione mais participantes fictícios conforme necessário
       ];
     </script>
   </body>
