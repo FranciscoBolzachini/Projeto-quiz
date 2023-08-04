@@ -109,3 +109,6 @@ cadastro (nome,temaJogo,data);
 selecionarTema(temaSelecionado);
 
 pontos;
+
+import { updateResultBox } from "./errosEacertos.js";
+updateResultBox();

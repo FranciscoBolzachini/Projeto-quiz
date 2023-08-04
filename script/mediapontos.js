@@ -25,7 +25,7 @@ export function iniciarQuiz() {
     console.log("Média de Pontos: ", mediaPontos);
 
     
-    cadastro (nome,temaJogo,data,totalPontos)
+    cadastro (nome,temaJogo,data,totalPontos,mediaAcertos,mediaErros)
 }
 
 export function cadastro (nome,temaJogo,data) {
@@ -34,7 +34,7 @@ export function cadastro (nome,temaJogo,data) {
     var linha = tb.insertRow(qtdLinhas)
     var data = new Date();
 
-
+    
     var cellNome = linha.insertCell(0);
     var  celltema = linha.insertCell(1);
     var celldata = linha.insertCell(2);
@@ -44,4 +44,15 @@ export function cadastro (nome,temaJogo,data) {
     celltema.innerHTML = temaJogo;
     celldata.innerHTML = data.toLocaleString('pt-Br');
     cellpontuacao.innerHTML = totalPontos;
+
+    const { acertos, erros } = participant.scores;
+    const pontuacao = `${acertos} / ${acertos + erros}`;
+    cellpontuacao.textContent = pontuacao;
+
+    const mediaAcertos = (acertos / participantsData.length).toFixed(2);
+    const mediaErros = (erros / participantsData.length).toFixed(2);
+    cellmediaAcertos.textContent = mediaAcertos;
+    cellmediaErros.textContent = mediaErros;
+
+    updateResultBox()
 };
