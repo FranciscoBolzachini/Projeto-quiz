@@ -86,3 +86,15 @@ quizcss.addEventListener("click", () => { // <- CSS
 quizjs.addEventListener("click", () => { // <- JS
     audio.src = audios[2];
 });
+
+import {pontos, temaJogo,iniciarQuiz,cadastro,FazerPerguntas,selecionarTema} from './mediapontos.js';
+
+FazerPerguntas(IndicePergunta, respostaUsuario);
+
+iniciarQuiz();
+
+cadastro (nome,temaJogo,data);
+
+selecionarTema(temaSelecionado);
+
+pontos;
