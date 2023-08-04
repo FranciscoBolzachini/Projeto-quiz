@@ -49,40 +49,74 @@
 
             <div class="quiz-footer">
               <span class="question-total">1 de 10 Questões</span>
+              <button class="goHome-btn">Home</button>
               <button class="next-btn">Próxima</button>
             </div>
           </div>
 
-          <div class="result-box">
-            <h2>Resultado</h2>
-            <div class="percentage-container">
-              <div class="circular-progress">
-                <span class="progress-value"> 0% </span>
+          <div class="result-box-container">
+            <div class="result-container">
+              <div class="result-box">
+                <h2>Resultado</h2>
+                <div class="percentage-container">
+                  <div class="circular-progress">
+                    <span class="progress-value"> 0% </span>
+                  </div>
+                  <span class="score-text">Sua pontuação 0 de 10</span>
+                </div>
+                <div class="buttons">
+                  <button class="tryAgain-btn">Refazer</button>
+                  <button class="goHome-btn">Home</button>
+                </div>
               </div>
-              <span class="score-text">Sua pontuação 0 de 10</span>
-            </div>
-            <div class="buttons">
-              <button class="tryAgain-btn">Refazer</button>
-              <button class="goHome-btn">Home</button>
-            </div>
-          </div>
 
-          <div class="ranking-box">
-            <div class="ranking-container">
-              <h2>Ranking</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome do Participante</th>
-                    <th>Pontuação HTML</th>
-                    <th>Pontuação CSS</th>
-                    <th>Pontuação JavaScript</th>
-                    <th>Tempo de Resposta</th>
-                    <th>Data do Quiz</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+              <div class="insights-container">
+                <div class="insight">
+                  <h3>HTML</h3>
+                  <p>Média de acertos: <span id="html-average">0</span></p>
+                  <p>Média de erros: <span id="html-errors">0</span></p>
+                  <p>Pontuação média: <span id="html-average-score">0</span></p>
+                  <p>Ranking: <span id="html-ranking-score"></span></p>
+                </div>
+                <div class="insight">
+                  <h3>CSS</h3>
+                  <p>Média de acertos: <span id="css-average">0</span></p>
+                  <p>Média de erros: <span id="css-errors">0</span></p>
+                  <p>Pontuação média: <span id="css-average-score">0</span></p>
+                  <p>Ranking: <span id="css-ranking-score"></span></p>
+                </div>
+                <div class="insight">
+                  <h3>JavaScript</h3>
+                  <p>
+                    Média de acertos: <span id="javascript-average">0</span>
+                  </p>
+                  <p>Média de erros: <span id="javascript-errors">0</span></p>
+                  <p>
+                    Pontuação média:
+                    <span id="javascript-average-score">0</span>
+                  </p>
+                  <p>Ranking: <span id="javascript-ranking-score"></span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ranking-box">
+              <div class="ranking-container">
+                <h2>Ranking</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nome do Participante</th>
+                      <th>Pontuação HTML</th>
+                      <th>Pontuação CSS</th>
+                      <th>Pontuação JavaScript</th>
+                      <th>Tempo de Resposta</th>
+                      <th>Data do Quiz</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
@@ -150,7 +184,7 @@
       <span id="iconToggle"><i class="fa">&#xf185;</i></span>
     </button>
 
-    <script type="module" src="quiz.js">
+    <script>
       const startBtn = document.querySelector(".start-btn");
       const popupInfo = document.querySelector(".popup-info");
       const exitBtn = document.querySelector(".exit-btn");
@@ -166,6 +200,8 @@
       const participantNameInput = document.getElementById("participantName");
       const themeSelect = document.getElementById("themeSelect");
       const showResultsBtn = document.querySelector(".show-results-btn");
+      const rankingBox = document.querySelector(".ranking-box");
+      const insightsContainer = document.querySelector(".insights-container");
 
       const audio = document.querySelector(".myAudio");
       const pausebtn = document.querySelector("#audioPlayer");
@@ -242,49 +278,31 @@
       let isResultsVisible = false;
 
       function fillResultsTable() {
-        const resultTable = document.getElementById("result-table");
-        const resultTableBody = resultTable.querySelector("tbody");
+        const resultTableBody = document.querySelector(
+          ".ranking-container tbody"
+        );
 
         resultTableBody.innerHTML = "";
 
         participantsData.forEach((participant) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-        <td>${participant.name}</td>
-        <td>${participant.scores.HTML}</td>
-        <td>${participant.scores.CSS}</td>
-        <td>${participant.scores.JavaScript}</td>
-        <td>${participant.timeTaken}</td>
-        <td>${participant.date}</td>
-      `;
+      <td>${participant.name}</td>
+      <td>${participant.scores.HTML}</td>
+      <td>${participant.scores.CSS}</td>
+      <td>${participant.scores.JavaScript}</td>
+      <td>${participant.timeTaken}</td>
+      <td>${formatDate(participant.date)}</td>
+    `;
           resultTableBody.appendChild(row);
         });
 
-        const htmlAverage = document.getElementById("html-average");
-        const cssAverage = document.getElementById("css-average");
-        const javascriptAverage = document.getElementById("javascript-average");
+        updateInsights();
+      }
 
-        const totalParticipants = participantsData.length;
-        const htmlTotalScore = participantsData.reduce(
-          (acc, participant) => acc + participant.scores.HTML,
-          0
-        );
-        const cssTotalScore = participantsData.reduce(
-          (acc, participant) => acc + participant.scores.CSS,
-          0
-        );
-        const javascriptTotalScore = participantsData.reduce(
-          (acc, participant) => acc + participant.scores.JavaScript,
-          0
-        );
-
-        const htmlAverageScore = htmlTotalScore / totalParticipants;
-        const cssAverageScore = cssTotalScore / totalParticipants;
-        const javascriptAverageScore = javascriptTotalScore / totalParticipants;
-
-        htmlAverage.textContent = htmlAverageScore.toFixed(2);
-        cssAverage.textContent = cssAverageScore.toFixed(2);
-        javascriptAverage.textContent = javascriptAverageScore.toFixed(2);
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("pt-BR");
       }
 
       function toggleTheme() {
@@ -302,6 +320,10 @@
         }
       }
 
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("pt-BR");
+      }
       function loadQuestionsByTheme(theme) {
         switch (theme) {
           case "HTML":
@@ -409,6 +431,11 @@
         scoreText.textContent = `Sua pontuação: ${userScore} de ${questions.length}`;
 
         animateCircularProgress();
+        setTimeout(() => {
+          rankingBox.classList.add("active");
+          insightsContainer.classList.add("active");
+          fillResultsTable();
+        }, 800);
       }
 
       let questions = [
@@ -551,17 +578,6 @@
           timeTaken: "12 minutos",
           date: "2023-08-02",
         },
-        {
-          name: "Pedro",
-          scores: {
-            HTML: 6,
-            CSS: 8,
-            JavaScript: 7,
-          },
-          timeTaken: "8 minutos",
-          date: "2023-08-03",
-        },
-        // Adicione mais participantes fictícios conforme necessário
       ];
 
       const audios = [
