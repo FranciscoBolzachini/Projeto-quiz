@@ -241,3 +241,15 @@ let isResultsVisible = false;
         fillResultsTable();
         }, 800);
     }
+
+import {pontos, temaJogo,iniciarQuiz,cadastro,FazerPerguntas,selecionarTema} from './mediapontos.js';
+
+FazerPerguntas(IndicePergunta, respostaUsuario);
+
+iniciarQuiz();
+
+cadastro (nome,temaJogo,data);
+
+selecionarTema(temaSelecionado);
+
+pontos;
