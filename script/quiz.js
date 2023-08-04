@@ -149,21 +149,16 @@ const participantsData = [
 ];
 
 
+
 const resultBox = document.querySelector(".result-box");
 const resultBoxContainer = document.querySelector(".result-box-container");
-
 const participantNameInput = document.getElementById("participantName");
-
 const themeSelect = document.getElementById("themeSelect");
-
 const rankingBox = document.querySelector(".ranking-box");
-
 const insightsContainer = document.querySelector(".insights-container");
-
 const quizhtml = document.querySelector(".html-theme");
 const quizcss = document.querySelector(".css-theme");
 const quizjs = document.querySelector(".js-theme");
-
 
 let isResultsVisible = false;
     function fillResultsTable() {
