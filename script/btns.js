@@ -8,3 +8,5 @@ export const quizBox = document.querySelector(".quiz-box");
 export let questionCount = 0;
 export let questionNum = 1;
 export const nextBtn = document.querySelector(".next-btn");
+export const tryAgainBtn = document.querySelector(".tryAgain-btn");
+export const goHomeBtn = document.querySelector(".goHome-btn");
