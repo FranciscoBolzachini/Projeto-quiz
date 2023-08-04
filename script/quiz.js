@@ -117,6 +117,36 @@ quizjs.addEventListener("click", () => { // <- JS
 
 
 
+import {pontos, temaJogo,iniciarQuiz,cadastro,FazerPerguntas,selecionarTema} from './mediapontos.js';
+FazerPerguntas(IndicePergunta, respostaUsuario);
+iniciarQuiz();
+cadastro (nome,temaJogo,data);
+selecionarTema(temaSelecionado);
+pontos;
+
+
+const participantsData = [
+    {
+    name: "João",
+    scores: {
+        HTML: 8,
+        CSS: 7,
+        JavaScript: 9,
+    },
+    timeTaken: "10 minutos",
+    date: "2023-08-01",
+    },
+    {
+    name: "Maria",
+    scores: {
+        HTML: 7,
+        CSS: 6,
+        JavaScript: 8,
+    },
+    timeTaken: "12 minutos",
+    date: "2023-08-02",
+    },
+];
 
 
 const resultBox = document.querySelector(".result-box");
@@ -178,6 +208,8 @@ let isResultsVisible = false;
         iconToggle.innerHTML = '<i class="fa">&#xf185;</i>';
         }
     }
+    toggleTheme();
+
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -241,15 +273,4 @@ let isResultsVisible = false;
         fillResultsTable();
         }, 800);
     }
-
-import {pontos, temaJogo,iniciarQuiz,cadastro,FazerPerguntas,selecionarTema} from './mediapontos.js';
-
-FazerPerguntas(IndicePergunta, respostaUsuario);
-
-iniciarQuiz();
-
-cadastro (nome,temaJogo,data);
-
-selecionarTema(temaSelecionado);
-
-pontos;
+    showResultBox();
