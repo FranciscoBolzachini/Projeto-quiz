@@ -609,9 +609,15 @@ body.light-theme #iconToggle[data-icon="sun"] {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 210px;
+  width: 50px;
+  height: 50px;
   z-index: 9999;
+  border-radius: 100%;
   cursor: pointer;
+  color: #1b1e23;
+  background-color: #86eb86;
+  font-size: 16px;
+  font-weight: 800;
 }
 
 #audioPlayer::-webkit-media-controls-panel {

@@ -2,6 +2,8 @@ import { questionsHTML } from "./questions-html.js";
 import { questionsCSS } from "./questions-css.js";
 import { quetionsJS } from "./question-js.js";
 import { startBtn, popupInfo, exitBtn, main, continueBtn, quizSection, quizBox, questionCount, questionNum,nextBtn } from "./btns.js";
+import { pausebtn, audio, quizhtml, quizcss, quizjs, audios, } from "./musica.js";
+
 startBtn.onclick = () => {
     popupInfo.classList.add("active");
     main.classList.add("active");
@@ -20,6 +22,7 @@ continueBtn.onclick = () => {
 
     showQuestions(0);
     questionCounter(1);
+    audio.play().loop();
 };
 
 nextBtn.onclick = () => {
@@ -57,20 +60,6 @@ start ();
 pause ();
 timer ();
 
-
-
-import { pausebtn, audio, quizhtml, quizcss, quizjs, audios, } from "./musica.js";
-// modificação que eu fiz no continueBtn.onclick
-continueBtn.onclick = () => {
-    quizSection.classList.add("active");
-    popupInfo.classList.remove("active");
-    main.classList.remove("active");
-    quizBox.classList.add("active");
-    
-    showQuestions(0);
-    questionCounter(1);
-    audio.play().loop(); // <- aqui
-};
 
 // Função do novo botão de pause
 let tocando = true;

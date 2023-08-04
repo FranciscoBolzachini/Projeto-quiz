@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Interativo - HTML, CSS e JavaScript</title>
+    
     <meta
       name="description"
       content="Escolha um tema, responda as questões e mostre que você é fera no assunto!"
@@ -139,10 +140,11 @@
         <a href="#" class="info-btn continue-btn">Continue</a>
       </div>
     </div>
-    <audio controls id="audioPlayer">
-      <source src="#" type="audio/mpeg" />
+    <audio class="myAudio">
+      <source src="./audio-fundo/WhatsApp Audio 2023-07-26 at 22.23.34.mpeg" type="audio/mpeg" />
       Seu navegador não suporta o elemento de áudio.
     </audio>
+    <button id="audioPlayer">Pause</button>
 
     <button class="theme-toggle" onclick="toggleTheme()">
       <span id="iconToggle"><i class="fa">&#xf185;</i></span>
@@ -157,15 +159,19 @@
       const quizSection = document.querySelector(".quiz-section");
       const quizBox = document.querySelector(".quiz-box");
       const resultBox = document.querySelector(".result-box");
-      const resultBoxContainer = document.querySelector(
-        ".result-box-container"
-      );
+      const resultBoxContainer = document.querySelector(".result-box-container");
       const nextBtn = document.querySelector(".next-btn");
       const tryAgainBtn = document.querySelector(".tryAgain-btn");
       const goHomeBtn = document.querySelector(".goHome-btn");
       const participantNameInput = document.getElementById("participantName");
       const themeSelect = document.getElementById("themeSelect");
       const showResultsBtn = document.querySelector(".show-results-btn");
+
+      const audio = document.querySelector(".myAudio");
+      const pausebtn = document.querySelector("#audioPlayer");
+      const quizhtml = document.querySelector(".html-theme");
+      const quizcss = document.querySelector(".css-theme");
+      const quizjs = document.querySelector(".js-theme");
 
       startBtn.onclick = () => {
         popupInfo.classList.add("active");
@@ -186,6 +192,7 @@
         showQuestions(0);
         questionCounter(1);
         headerScore();
+        audio.play().loop();
       };
 
       tryAgainBtn.onclick = () => {
@@ -212,6 +219,7 @@
         userScore = 0;
         showQuestions(questionCount);
         questionCounter(questionNum);
+        audio.pause();
       };
 
       let questionCount = 0;
@@ -291,14 +299,6 @@
           body.classList.remove("light-theme");
           body.classList.add("dark-theme");
           iconToggle.innerHTML = '<i class="fa">&#xf185;</i>';
-        }
-      }
-      function togglePlayPause() {
-        const audio = document.getElementById("audioPlayer");
-        if (audio.paused) {
-          audio.play();
-        } else {
-          audio.pause();
         }
       }
 
@@ -563,6 +563,36 @@
         },
         // Adicione mais participantes fictícios conforme necessário
       ];
+
+      const audios = [
+    "../audio-fundo/WhatsApp Audio 2023-07-26 at 22.23.34.mpeg",
+    "../audio-fundo/WhatsApp Audio 2023-07-27 at 15.14.12 (1).mpeg",
+    "../audio-fundo/WhatsApp Audio 2023-07-27 at 15.14.12.mpeg"
+];
+
+let tocando = true;
+pausebtn.onclick = () => {
+    if (tocando) {
+        audio.pause();
+        pausebtn.textContent = "Play";
+    } else {
+        audio.play();
+        pausebtn.textContent = "Pause";
+    }
+    tocando = !tocando;
+    };
+
+    quizhtml.addEventListener("click", () => { // <- HTML
+    audio.src = audios[0];
+});
+
+quizcss.addEventListener("click", () => { // <- CSS
+    audio.src = audios[1];
+});
+
+quizjs.addEventListener("click", () => { // <- JS
+    audio.src = audios[2];
+});
     </script>
   </body>
 </html>

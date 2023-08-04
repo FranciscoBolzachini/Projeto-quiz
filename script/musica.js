@@ -4,8 +4,8 @@
 
 // constantes que eu adicionei que são para adicionar no js raiz
 
-export const pausebtn = document.querySelector(".pausePlay");
-export const audio = document.querySelector(".meuAudio");
+export const pausebtn = document.querySelector("#audioPlayer");
+export const audio = document.querySelector(".myAudio");
 export const quizhtml = document.querySelector(".html-theme");
 export const quizcss = document.querySelector(".css-theme");
 export const quizjs = document.querySelector(".js-theme");
